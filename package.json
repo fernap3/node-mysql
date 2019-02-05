@@ -1,0 +1,22 @@
+{
+  "name": "@fernap3/sql",
+  "version": "1.0.0",
+  "description": "A wrapper to make using MySQL a little easier in NodeJS",
+  "main": "sql.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernap3/node-mysql.git"
+  },
+  "author": "Peter Fernandes",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fernap3/node-mysql/issues"
+  },
+  "homepage": "https://github.com/fernap3/node-mysql#readme",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
