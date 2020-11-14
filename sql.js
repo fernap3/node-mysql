@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.doQuery = exports.closePool = exports.getConnection = void 0;
 const mysql = require("mysql");
 var pool = mysql.createPool({
     host: process.env.DB_HOST,
