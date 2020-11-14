@@ -1,6 +1,6 @@
 {
   "name": "@fernap3/sql",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A wrapper to make using MySQL a little easier in NodeJS",
   "main": "sql.js",
   "scripts": {
