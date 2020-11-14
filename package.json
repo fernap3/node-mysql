@@ -1,6 +1,6 @@
 {
   "name": "@fernap3/sql",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A wrapper to make using MySQL a little easier in NodeJS",
   "main": "sql.js",
   "scripts": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/fernap3/node-mysql#readme",
   "dependencies": {
+    "@types/mysql": "^2.15.15",
     "@types/node": "^14.14.7",
     "mysql": "^2.16.0"
   }
