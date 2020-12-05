@@ -33,7 +33,7 @@ export async function getConnection()
 
 export async function closePool()
 {
-	return new Promise((resolve, reject) =>
+	return new Promise<void>((resolve, reject) =>
 	{
 		pool.end((err) => {
 			if (err) throw err;
