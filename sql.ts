@@ -112,64 +112,6 @@ module.exports = {
 	doQuery: doQuery,
 	getConnection: getConnection,
 	bitToBool: bitToBool,
-	closePool: closePool
+	closePool: closePool,
+	sql: sql,
 };
-
-export type EVNetwork = "greenlots" | "chargepoint" | "semacharge" | "opconnect" | "tesla" | "evconnect" | "aerovironment" | "gewattstation" | "evgo" | "blink" | "electrifyamerica";
-
-export interface StationQueryRow
-{
-	StationId: string;
-	DeviceIds: string[];
-	Name: string;
-	Subname?: string;
-	NetworkId: EVNetwork;
-	City: string;
-	State: string;
-	StreetAddress: string;
-	Latitude: number;
-	Longitude: number;
-}
-
-export interface StationStatusQueryRow
-{
-	UserStationId: string;
-	StationId: string;
-	Name: string;
-	Subname?: string;
-	NetworkId: EVNetwork;
-	Nickname: string;
-	DeviceIds: string[];
-	LocaleId: string;
-	LocaleNickname: string;
-}
-
-export interface UserLocaleQueryRow
-{
-	UserLocaleId: string;
-	UserId: string;
-	Nickname: string;
-	Latitude: number;
-	Longitude: number;
-}
-
-export interface ChargeSuggestionQueryRow
-{
-	StationId: string;
-	NetworkId: EVNetwork;
-	DeviceIds: string[];
-	UserStationId: string;
-	Name: string;
-	Subname?: string;
-	Nickname: string;
-}
-
-export interface UserQueryRow
-{
-	UserId: string;
-	FirstName: string;
-	LastName: string;
-	Email: string;
-	PasswordSalt: string;
-	PasswordHash: string;
-}
