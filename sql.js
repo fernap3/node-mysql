@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.doQuery = exports.closePool = exports.getConnection = void 0;
+exports.sql = exports.doQuery = exports.closePool = exports.getConnection = void 0;
 const mysql = require("mysql");
 var pool = mysql.createPool({
     host: process.env.DB_HOST,
@@ -38,11 +38,13 @@ async function closePool() {
     });
 }
 exports.closePool = closePool;
-async function doQuery(query, queryParams, connection) {
+async function doQuery(query, queryParamsOrConnection, connection) {
+    const queryString = typeof query === "string" ? query : query.queryText;
+    const parameters = typeof query === "string" ? queryParamsOrConnection : query.parameters;
     return new Promise((resolve, reject) => {
         if (connection) {
             const queryStart = process.hrtime();
-            connection.query(query, queryParams, (err, rows) => {
+            connection.query(queryString, parameters, (err, rows) => {
                 if (process.env.LOG_SQL) {
                     const queryTime = process.hrtime(queryStart);
                     console.log(`Query took ${(queryTime[0] * 1000) + (queryTime[1] / 1e6)}ms: ${query}`);
@@ -57,7 +59,7 @@ async function doQuery(query, queryParams, connection) {
                 if (err)
                     throw err;
                 const queryStart = process.hrtime();
-                conn.query(query, queryParams, (err, rows) => {
+                conn.query(queryString, parameters, (err, rows) => {
                     if (process.env.LOG_SQL) {
                         const queryTime = process.hrtime(queryStart);
                         console.log(`Query took ${(queryTime[0] * 1000) + (queryTime[1] / 1e6)}ms: ${query}`);
@@ -72,6 +74,13 @@ async function doQuery(query, queryParams, connection) {
     });
 }
 exports.doQuery = doQuery;
+function sql(strings, ...exp) {
+    return {
+        queryText: strings.join("?"),
+        parameters: exp,
+    };
+}
+exports.sql = sql;
 function bitToBool(bitRecord) {
     return bitRecord[0] === 1;
 }
