@@ -42,14 +42,19 @@ export async function closePool()
 	});
 }
 
+export async function doQuery<T>(query: ParameterizedQuery, connection?: mysql.Connection): Promise<T[]>
 export async function doQuery<T>(query: string, queryParams?: any[], connection?: mysql.Connection): Promise<T[]>
+export async function doQuery<T>(query: string | ParameterizedQuery, queryParamsOrConnection?: any[] | mysql.Connection, connection?: mysql.Connection): Promise<T[]>
 {
+	const queryString = typeof query === "string" ? query : query.queryText;
+	const parameters = typeof query === "string" ? queryParamsOrConnection as any[] : query.parameters;
+	
 	return new Promise<T[]>((resolve, reject) =>
 	{
 		if (connection)
 		{
 			const queryStart = process.hrtime();
-			connection.query(query, queryParams, (err, rows) =>
+			connection.query(queryString, parameters, (err, rows) =>
 			{
 				if (process.env.LOG_SQL)
 				{
@@ -67,7 +72,7 @@ export async function doQuery<T>(query: string, queryParams?: any[], connection?
 				if (err) throw err;
 
 				const queryStart = process.hrtime();
-				conn.query(query, queryParams, (err, rows) =>
+				conn.query(queryString, parameters, (err, rows) =>
 				{
 					if (process.env.LOG_SQL)
 					{
@@ -82,6 +87,20 @@ export async function doQuery<T>(query: string, queryParams?: any[], connection?
 			});
 		}
 	});
+}
+
+export function sql(strings: TemplateStringsArray, ...exp: any[]): ParameterizedQuery
+{
+	return {
+		queryText: strings.join("?"),
+		parameters: exp,
+	} as ParameterizedQuery;
+}
+
+export interface ParameterizedQuery
+{
+	queryText: string;
+	parameters: any[];
 }
 
 function bitToBool(bitRecord: any)
