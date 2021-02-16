@@ -42,14 +42,21 @@ export async function closePool()
 	});
 }
 
-export async function doQuery<T>(query: ParameterizedQuery, connection?: mysql.Connection): Promise<T[]>
-export async function doQuery<T>(query: string, queryParams?: any[], connection?: mysql.Connection): Promise<T[]>
-export async function doQuery<T>(query: string | ParameterizedQuery, queryParamsOrConnection?: any[] | mysql.Connection, connection?: mysql.Connection): Promise<T[]>
+interface DoQueryResult<T> extends Array<T>
+{
+	affectedRows: number;
+	changedRows: number;
+	insertId: number;
+}
+
+export async function doQuery<T>(query: ParameterizedQuery, connection?: mysql.Connection): Promise<DoQueryResult<T>>
+export async function doQuery<T>(query: string, queryParams?: any[], connection?: mysql.Connection): Promise<DoQueryResult<T>>
+export async function doQuery<T>(query: string | ParameterizedQuery, queryParamsOrConnection?: any[] | mysql.Connection, connection?: mysql.Connection): Promise<DoQueryResult<T>>
 {
 	const queryString = typeof query === "string" ? query : query.queryText;
 	const parameters = typeof query === "string" ? queryParamsOrConnection as any[] : query.parameters;
 	
-	return new Promise<T[]>((resolve, reject) =>
+	return new Promise<DoQueryResult<T>>((resolve, reject) =>
 	{
 		if (connection)
 		{
