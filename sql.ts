@@ -10,11 +10,17 @@ var pool = mysql.createPool({
 	{
 		// Make single-bit fields represented as true/false in javascript
 		if (field.type === "BIT" && field.length === 1)
-			return field.buffer()[0] === 1;
+		{
+			const buf = field.buffer();
+			return buf == null ? null : buf[0] === 1;
+		}
 
 		// Parse JSON fields into native objects rather than leaving them as strings
 		if (field.type === "JSON")
-			return JSON.parse(field.string());
+		{
+			const str = field.string();
+			return str == null ? null : JSON.parse(str);
+		}
 
 		return defaultCastFn();
 	}
